@@ -239,3 +239,11 @@ Open the project
 **ZeroWasteMart**
 
 A web application prototype combining marketplace functionality, farmer selling workflows, admin management, OCR processing, and email-service support.
+<img width="1920" height="1080" alt="Screenshot 2026-09-25 151503" src="https://github.com/user-attachments/assets/27c61400-1817-4347-b95e-34fe8f3ee95d" />
+<img width="1920" height="1080" alt="Screenshot 2026-09-25 151522" src="https://github.com/user-attachments/assets/a33db4b3-3b5f-45a3-a44f-ad741346a09d" />
+<img width="1920" height="1080" alt="Screenshot 2026-09-25 150157" src="https://github.com/user-attachments/assets/10ebfcc9-45f4-4436-8502-b2d3ca76f859" />
+<img width="1920" height="1080" alt="Screenshot 2026-09-25 150051" src="https://github.com/user-attachments/assets/f43852bb-e216-4f5c-8f94-79db9c86ed84" />
+
+
+
+
