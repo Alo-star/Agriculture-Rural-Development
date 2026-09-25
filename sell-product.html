@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Portal & Live Pickup Tracking - ZeroWasteMart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #faf5e4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #1f2933;
+        }
+        
+        .navbar {
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            text-decoration: none;
+            gap: 0.5rem;
+        }
+        
+        .nav-logo img { width: 40px; height: 40px; border-radius: 0.5rem; }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover { background: #f0f8f0; color: #2e7d32; }
+        .nav-link.active { background: #2e7d32; color: #fff; }
+
+        .main-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, #267b31, #45a94f);
+            color: #fff;
+            margin: 0 -2rem 2rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 0 0 1.5rem 1.5rem;
+            box-shadow: 0 8px 24px rgba(46, 125, 50, 0.16);
+        }
+        
+        .page-header h1 { font-size: 2.3rem; font-weight: bold; margin: 0 0 0.5rem 0; }
+        .page-header p { font-size: 1.1rem; color: rgba(255,255,255,0.9); margin: 0; }
+
+        /* Track lookup banner */
+        .track-search-card {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 1.25rem 1.75rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .track-search-inputs {
+            display: flex;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .track-search-inputs input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid #a9c9a9;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1b5e20;
+        }
+
+        .track-search-inputs button {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+        .track-search-inputs button:hover { background: #1b5e20; }
+
+        .sell-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.9fr);
+            gap: 2rem;
+            align-items: start;
+        }
+        
+        .sell-form {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 2.25rem;
+            box-shadow: 0 8px 26px rgba(54, 72, 45, 0.1);
+        }
+        
+        .form-section { margin-bottom: 2rem; }
+        .form-section h3 {
+            color: #2e7d32;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d8ded5;
+            border-radius: 0.65rem;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        /* Fixed Demand Banner */
+        .demand-banner {
+            background: #eef8ee;
+            border: 1.5px solid #2e7d32;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .demand-header {
+            color: #1b5e20;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .demand-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #c8e6c9;
+            margin-bottom: 0.5rem;
+        }
+
+        .demand-item-title { font-weight: 700; font-size: 1rem; color: #1f2933; }
+        .demand-item-meta { font-size: 0.88rem; color: #555; margin-top: 2px; }
+        .demand-item-price { font-size: 1.15rem; font-weight: 800; color: #2e7d32; }
+        
+        .remove-btn {
+            background: transparent;
+            border: none;
+            color: #d32f2f;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            background: #2e7d32;
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover { background: #1b5e20; }
+
+        /* Payout calculation box */
+        .payout-summary {
+            background: #f0f8f0;
+            border: 1.5px solid #cfe3d0;
+            border-radius: 0.75rem;
+            padding: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .payout-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            font-size: 1rem;
+        }
+
+        .payout-row.deduction {
+            color: #c62828;
+            border-top: 1px dashed #cfe3d0;
+            border-bottom: 1px dashed #cfe3d0;
+        }
+
+        .payout-row.net {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1b5e20;
+            padding-top: 0.6rem;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .payment-method {
+            border: 2px solid #e0e0e0;
+            border-radius: 0.65rem;
+            padding: 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .payment-method:hover, .payment-method.selected {
+            border-color: #2e7d32;
+            background: #f0f8f0;
+        }
+
+        .payment-method i { font-size: 2rem; color: #2e7d32; margin-bottom: 0.5rem; }
+        .payment-method h4 { font-weight: 700; margin: 0 0 0.2rem 0; }
+        .payment-method p { font-size: 0.8rem; color: #666; margin: 0; }
+
+        /* ==================== LIVE TRACKING STYLES ==================== */
+        .tracking-modal {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-bottom: 2rem;
+            border: 2px solid #2e7d32;
+        }
+
+        .tracking-top-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f1f8f1;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .tracking-id-badge {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1b5e20;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tracking-status-pill {
+            background: #2e7d32;
+            color: #fff;
+            padding: 0.35rem 1rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Timeline Stepper */
+        .stepper {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .stepper::before {
+            content: '';
+            position: absolute;
+            left: 17px;
+            top: 15px;
+            bottom: 15px;
+            width: 4px;
+            background: #e0e0e0;
+        }
+
+        .step-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 2px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #fff;
+            border: 4px solid #bbb;
+            z-index: 2;
+        }
+
+        .step-item.completed::before {
+            background: #2e7d32;
+            border-color: #2e7d32;
+        }
+
+        .step-item.active::before {
+            background: #ff9800;
+            border-color: #ff9800;
+            box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.2);
+            animation: pulseDot 1.5s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .step-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1f2933;
+        }
+
+        .step-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .step-time {
+            font-size: 0.8rem;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .agent-info-card {
+            background: #f8faf8;
+            border: 1px solid #d0e5d0;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .agent-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #2e7d32;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+
+        .seller-guide {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 1.75rem;
+            box-shadow: 0 8px 26px rgba(54, 72, 45, 0.1);
+            position: sticky;
+            top: 105px;
+        }
+
+        .seller-guide h2 { color: #2e7d32; font-size: 1.4rem; margin-top: 0; }
+        .guide-item { display: flex; gap: 0.8rem; margin-bottom: 1.2rem; }
+        .guide-item i { color: #2e7d32; font-size: 1.2rem; margin-top: 0.2rem; }
+        .guide-item strong { display: block; margin-bottom: 0.2rem; font-size: 0.95rem; }
+        .guide-item span { color: #666; font-size: 0.88rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/zerowastemart-logo.svg" alt="ZeroWasteMart" onerror="this.src='https://placehold.co/40x40/2e7d32/white?text=ZWM'">
+                ZeroWasteMart
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="sell-product.html" class="nav-link active">Sell Produce</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1>Farmer Selling &amp; Live Tracking Portal</h1>
+            <p>Fulfill locked-in market demand &amp; track your farmgate collection live</p>
+        </div>
+
+        <!-- 🔍 SEARCH ANY TRACKING ID CARD -->
+        <div class="track-search-card">
+            <div>
+                <strong style="color: #1b5e20; font-size: 1.1rem; display: block;">Track Existing Produce Pickup</strong>
+                <span style="color: #666; font-size: 0.9rem;">Have a Tracking ID? Enter it below to see live agent location &amp; payout status.</span>
+            </div>
+            <div class="track-search-inputs">
+                <input type="text" id="trackSearchInput" placeholder="e.g. TRK-2026-123456">
+                <button type="button" onclick="trackFromInput()">
+                    <i class="fa fa-search"></i> Track Status
+                </button>
+            </div>
+        </div>
+
+        <!-- 📍 DYNAMIC LIVE TRACKING MODAL / VIEW (Appears when tracking an ID) -->
+        <div id="live-tracking-panel" style="display: none;" class="tracking-modal"></div>
+
+        <div class="sell-layout">
+            <div class="sell-form">
+                <!-- STEP 1: Product & Farmer Details Form -->
+                <form id="product-form">
+                    <!-- Fulfilling Market Demand (Fixed Demand from Cart) -->
+                    <div id="demand-banner-container"></div>
+
+                    <!-- Cascading Produce Selector -->
+                    <div class="form-section">
+                        <h3><i class="fa fa-seedling"></i> Produce Selection &amp; Variety</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="categorySelect">Category *</label>
+                                <select id="categorySelect" required onchange="onCategoryChange()">
+                                    <option value="">Select Category</option>
+                                    <option value="Fruits">🍎 Fruits</option>
+                                    <option value="Vegetables">🥕 Vegetables</option>
+                                    <option value="Crops">🌾 Crops &amp; Grains</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="itemSelect">Produce Item *</label>
+                                <select id="itemSelect" required onchange="onItemChange()" disabled>
+                                    <option value="">Choose Category first</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="varietySelect">Specific Variety / Type *</label>
+                                <select id="varietySelect" required onchange="onVarietyChange()" disabled>
+                                    <option value="">Choose Item first</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="custom-variety-group" style="display: none;">
+                                <label for="customVariety">Enter Custom Variety *</label>
+                                <input type="text" id="customVariety" placeholder="e.g. Local Organic Desi" oninput="updateCalculatedTitle()">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productName">Listing Title (Auto-generated)</label>
+                            <input type="text" id="productName" readonly style="background: #f8fbf5; font-weight: 700; color: #2e7d32;">
+                        </div>
+                    </div>
+
+                    <!-- Farmer & Pickup Location -->
+                    <div class="form-section">
+                        <h3><i class="fa fa-truck-pickup"></i> Farmer &amp; Pickup Address</h3>
+                        <div class="form-group">
+                            <label for="sellerName">Farmer Full Name *</label>
+                            <input type="text" id="sellerName" required placeholder="Enter your full name">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sellerPhone">Contact Phone Number *</label>
+                                <input type="tel" id="sellerPhone" required placeholder="e.g. 9876543210">
+                            </div>
+                            <div class="form-group">
+                                <label for="sellerEmail">Email Address</label>
+                                <input type="email" id="sellerEmail" placeholder="farmer@example.com">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pickupAddress">Farm / Warehouse Pickup Address *</label>
+                            <textarea id="pickupAddress" rows="3" required placeholder="Complete farm address with village, landmark, district, and pincode"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Additional Harvest Details -->
+                    <div class="form-section">
+                        <h3><i class="fa fa-clipboard-check"></i> Quality &amp; Harvest Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="harvestCondition">Harvest Quality *</label>
+                                <select id="harvestCondition" required>
+                                    <option value="Fresh Harvest (A-Grade)">Fresh Harvest (A-Grade Export Quality)</option>
+                                    <option value="Standard Mandi Grade">Standard Mandi Grade</option>
+                                    <option value="Naturally Organic">Naturally Grown / Organic</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="harvestDate">Harvest Date</label>
+                                <input type="date" id="harvestDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fa fa-arrow-right"></i> Proceed to Payout Calculation
+                    </button>
+                </form>
+
+                <!-- STEP 2: Payout Calculation & Payment Method -->
+                <div id="payment-step" style="display: none;">
+                    <h3><i class="fa fa-money-check-alt"></i> Farmer Payout Breakdown</h3>
+                    <p style="color: #666;">We pay you directly upon farm pickup. Logistics are deducted from payout with zero upfront costs to you.</p>
+
+                    <!-- Payout Breakdown Summary -->
+                    <div class="payout-summary">
+                        <div class="payout-row">
+                            <span>Total Gross Sale Value:</span>
+                            <strong id="summary-gross">₹0.00</strong>
+                        </div>
+                        <div class="payout-row deduction">
+                            <span>Pickup &amp; Transit Deduction <small>(5%, min ₹20, max ₹150)</small>:</span>
+                            <strong id="summary-deduction">− ₹0.00</strong>
+                        </div>
+                        <div class="payout-row net">
+                            <span>Net Farmer Payout:</span>
+                            <strong id="summary-net">₹0.00</strong>
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 1.5rem 0 0.5rem;">Choose How You Want to Receive Payment:</h4>
+                    <div class="payment-methods">
+                        <div class="payment-method selected" data-method="upi" onclick="selectPaymentMethod('upi')">
+                            <i class="fa fa-mobile-alt"></i>
+                            <h4>UPI Transfer</h4>
+                            <p>GPay, PhonePe, Paytm, BHIM</p>
+                        </div>
+                        <div class="payment-method" data-method="bank" onclick="selectPaymentMethod('bank')">
+                            <i class="fa fa-university"></i>
+                            <h4>Bank Transfer</h4>
+                            <p>Direct NEFT / IMPS to Account</p>
+                        </div>
+                        <div class="payment-method" data-method="cod" onclick="selectPaymentMethod('cod')">
+                            <i class="fa fa-hand-holding-usd"></i>
+                            <h4>Cash on Pickup</h4>
+                            <p>Cash handed at farmgate</p>
+                        </div>
+                    </div>
+
+                    <!-- UPI Input -->
+                    <div id="upi-box" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <label for="upiId">Your UPI ID *</label>
+                            <input type="text" id="upiId" placeholder="e.g. 9876543210@ybl or farmer@upi">
+                        </div>
+                    </div>
+
+                    <!-- Bank Inputs -->
+                    <div id="bank-box" style="display: none; margin-top: 1rem;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bankAcc">Account Number *</label>
+                                <input type="text" id="bankAcc" placeholder="Bank Account Number">
+                            </div>
+                            <div class="form-group">
+                                <label for="bankIfsc">IFSC Code *</label>
+                                <input type="text" id="bankIfsc" placeholder="e.g. SBIN0001234">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="button" class="submit-btn" style="background: #777;" onclick="backToStep1()">
+                            <i class="fa fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="submit-btn" onclick="confirmPayoutListing()">
+                            <i class="fa fa-check-circle"></i> Confirm Settlement &amp; Book Pickup
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Thank You & Immediate Live Tracker -->
+                <div id="thank-you-step" style="display: none;">
+                    <div id="created-tracking-target"></div>
+                </div>
+            </div>
+
+            <aside class="seller-guide">
+                <h2>Farmer's Selling Guide</h2>
+                <div class="guide-item">
+                    <i class="fa fa-check-circle"></i>
+                    <div>
+                        <strong>Pre-set Buyer Price</strong>
+                        <span>The purchase rate is guaranteed by the platform demand. No bargaining or unsold crop losses.</span>
+                    </div>
+                </div>
+                <div class="guide-item">
+                    <i class="fa fa-truck"></i>
+                    <div>
+                        <strong>Free Direct Farm Pickup</strong>
+                        <span>Our team collects directly from your farm or storage warehouse. Zero transit hassle.</span>
+                    </div>
+                </div>
+                <div class="guide-item">
+                    <i class="fa fa-wallet"></i>
+                    <div>
+                        <strong>Prompt Settlement</strong>
+                        <span>Payment is transferred immediately upon quality verification at pickup.</span>
+                    </div>
+                </div>
+
+                <!-- Recently placed pickups by this farmer -->
+                <div id="recent-pickups-box" style="margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1.5rem; display: none;">
+                    <h3 style="color: #2e7d32; font-size: 1.15rem; margin-bottom: 0.8rem;">
+                        <i class="fa fa-history"></i> Your Recent Pickups
+                    </h3>
+                    <div id="recent-pickups-list" style="display: flex; flex-direction: column; gap: 0.6rem;"></div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // 1. Cascading Variety Master Data
+        const produceData = {
+            Fruits: {
+                'Mango': ['Alphonso (Hapus)', 'Kesar', 'Dasheri', 'Langra', 'Chaunsa', 'Banganapalli', 'Totapuri', 'Other / Custom Variety'],
+                'Apple': ['Shimla Royal', 'Kinnaur Apple', 'Kashmiri Delicious', 'Golden Apple', 'Other / Custom Variety'],
+                'Banana': ['Robusta', 'Grand Naine (G9)', 'Yelakki', 'Nendran', 'Other / Custom Variety'],
+                'Orange': ['Nagpur Mandarin', 'Mosambi (Sweet Lime)', 'Kinnow', 'Other / Custom Variety'],
+                'Grapes': ['Thompson Seedless', 'Sharad Seedless', 'Flame Seedless', 'Sonaka', 'Other / Custom Variety']
+            },
+            Vegetables: {
+                'Tomato': ['Hybrid Red Tomato', 'Desi / Country Tomato', 'Cherry Tomato', 'Roma Tomato', 'Other / Custom Variety'],
+                'Potato': ['Kufri Jyoti', 'Kufri Pukhraj', 'Chandramukhi', 'Chipsona', 'Other / Custom Variety'],
+                'Onion': ['Nashik Red Onion', 'White Onion', 'Shallot / Sambhar', 'Other / Custom Variety'],
+                'Carrot': ['Red Indian Carrot', 'Orange Hybrid Carrot', 'Other / Custom Variety'],
+                'Capsicum': ['Green Capsicum', 'Red Bell Pepper', 'Yellow Bell Pepper', 'Other / Custom Variety'],
+                'Broccoli': ['Calabrese Broccoli', 'Sprouting Broccoli', 'Other / Custom Variety']
+            },
+            Crops: {
+                'Rice': ['Basmati 1121', 'Traditional Basmati', 'Sona Masoori', 'Kolam / Wada Kolam', 'Raw Dhan', 'Other / Custom Variety'],
+                'Wheat': ['Sharbati Wheat', 'Lokwan Wheat', 'Khapli (Emmer)', 'HD-2967', 'Other / Custom Variety'],
+                'Corn': ['Yellow Maize / Corn', 'Sweet Corn', 'White Feed Maize', 'Other / Custom Variety'],
+                'Barley': ['Hulled Barley', '6-Row Barley', 'Other / Custom Variety'],
+                'Millet': ['Pearl Millet (Bajra)', 'Finger Millet (Ragi)', 'Sorghum (Jowar)', 'Other / Custom Variety']
+            }
+        };
+
+        const defaultRates = {
+            'Mango': 80, 'Apple': 90, 'Banana': 28, 'Orange': 45, 'Grapes': 65,
+            'Tomato': 25, 'Potato': 20, 'Onion': 32, 'Carrot': 35, 'Capsicum': 40, 'Broccoli': 50,
+            'Rice': 42, 'Wheat': 28, 'Corn': 24, 'Barley': 26, 'Millet': 38
+        };
+
+        // 2. Cascading Selector Handlers
+        function onCategoryChange() {
+            const cat = document.getElementById('categorySelect').value;
+            const itemSelect = document.getElementById('itemSelect');
+            const varietySelect = document.getElementById('varietySelect');
+            
+            itemSelect.innerHTML = '<option value="">Select Produce Item</option>';
+            varietySelect.innerHTML = '<option value="">Choose Item first</option>';
+            varietySelect.disabled = true;
+
+            if (cat && produceData[cat]) {
+                itemSelect.disabled = false;
+                Object.keys(produceData[cat]).forEach(item => {
+                    itemSelect.innerHTML += `<option value="${item}">${item}</option>`;
+                });
+            } else {
+                itemSelect.disabled = true;
+            }
+            updateCalculatedTitle();
+        }
+
+        function onItemChange() {
+            const cat = document.getElementById('categorySelect').value;
+            const item = document.getElementById('itemSelect').value;
+            const varietySelect = document.getElementById('varietySelect');
+
+            varietySelect.innerHTML = '<option value="">Select Specific Variety</option>';
+            if (cat && item && produceData[cat][item]) {
+                varietySelect.disabled = false;
+                produceData[cat][item].forEach(v => {
+                    varietySelect.innerHTML += `<option value="${v}">${v}</option>`;
+                });
+            } else {
+                varietySelect.disabled = true;
+            }
+            updateCalculatedTitle();
+        }
+
+        function onVarietyChange() {
+            const variety = document.getElementById('varietySelect').value;
+            const customGroup = document.getElementById('custom-variety-group');
+            if (variety === 'Other / Custom Variety') {
+                customGroup.style.display = 'block';
+                document.getElementById('customVariety').required = true;
+            } else {
+                customGroup.style.display = 'none';
+                document.getElementById('customVariety').required = false;
+            }
+            updateCalculatedTitle();
+        }
+
+        function updateCalculatedTitle() {
+            const item = document.getElementById('itemSelect').value;
+            let variety = document.getElementById('varietySelect').value;
+            if (variety === 'Other / Custom Variety') {
+                variety = document.getElementById('customVariety').value.trim() || 'Custom';
+            }
+            if (item) {
+                document.getElementById('productName').value = variety ? `${variety} ${item}` : item;
+            } else {
+                document.getElementById('productName').value = '';
+            }
+        }
+
+        // 3. Render Fulfilling Market Demand
+        function renderMarketDemand() {
+            const container = document.getElementById('demand-banner-container');
+            const selected = JSON.parse(localStorage.getItem('sellSelectedProducts') || '[]');
+
+            if (selected.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="demand-banner">
+                    <div class="demand-header">
+                        <i class="fa fa-check-circle"></i> Fulfilling Current Market Demand (Fixed by Admin)
+                    </div>
+                    ${selected.map((item, index) => `
+                        <div class="demand-item">
+                            <div>
+                                <div class="demand-item-title">${item.name}</div>
+                                <div class="demand-item-meta">
+                                    Rate: <b>₹${Number(item.price).toFixed(2)} / ${item.requiredUnit || 'kg'}</b> · 
+                                    Fixed Demand: <b>${item.quantity || 1} ${item.requiredUnit || 'kg'}</b>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="demand-item-price">₹${Number(item.totalPrice).toFixed(2)}</div>
+                                <button type="button" class="remove-btn" onclick="removeItem(${index})"><i class="fa fa-trash"></i> Remove</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function removeItem(index) {
+            let selected = JSON.parse(localStorage.getItem('sellSelectedProducts') || '[]');
+            selected.splice(index, 1);
+            localStorage.setItem('sellSelectedProducts', JSON.stringify(selected));
+            renderMarketDemand();
+        }
+
+        // 4. Step Transitions & Payout Calculation
+        let currentGross = 0;
+        let currentDeduction = 0;
+        let currentNet = 0;
+        let chosenMethod = 'upi';
+        let currentBatchDetails = [];
+
+        document.getElementById('product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const selected = JSON.parse(localStorage.getItem('sellSelectedProducts') || '[]');
+            if (selected.length > 0) {
+                currentGross = selected.reduce((sum, item) => sum + Number(item.totalPrice || 0), 0);
+                currentBatchDetails = selected.slice();
+            } else {
+                const item = document.getElementById('itemSelect').value;
+                const title = document.getElementById('productName').value || item;
+                const unitRate = defaultRates[item] || 40;
+                const defaultBatch = 50;
+                currentGross = unitRate * defaultBatch;
+                currentBatchDetails = [{
+                    name: title,
+                    price: unitRate,
+                    quantity: defaultBatch,
+                    requiredUnit: 'kg',
+                    totalPrice: currentGross
+                }];
+            }
+
+            currentDeduction = Math.min(150, Math.max(20, currentGross * 0.05));
+            currentNet = Math.max(0, currentGross - currentDeduction);
+
+            document.getElementById('summary-gross').textContent = `₹${currentGross.toFixed(2)}`;
+            document.getElementById('summary-deduction').textContent = `− ₹${currentDeduction.toFixed(2)}`;
+            document.getElementById('summary-net').textContent = `₹${currentNet.toFixed(2)}`;
+
+            document.getElementById('product-form').style.display = 'none';
+            document.getElementById('payment-step').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        function selectPaymentMethod(method) {
+            chosenMethod = method;
+            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+            document.querySelector(`[data-method="${method}"]`).classList.add('selected');
+
+            document.getElementById('upi-box').style.display = method === 'upi' ? 'block' : 'none';
+            document.getElementById('bank-box').style.display = method === 'bank' ? 'block' : 'none';
+        }
+
+        function backToStep1() {
+            document.getElementById('payment-step').style.display = 'none';
+            document.getElementById('product-form').style.display = 'block';
+        }
+
+        // ==================== 5. COMPLETE LIVE TRACKING ENGINE ====================
+
+        const TRACKING_STAGES = [
+            { step: 1, name: 'Pickup Booked & Confirmed', desc: 'Listing received. Verification agent dispatch in progress.' },
+            { step: 2, name: 'Logistics Agent Assigned', desc: 'Agent assigned with collection mini-truck.' },
+            { step: 3, name: 'Agent En Route to Farm', desc: 'Driver is traveling to your pickup address.' },
+            { step: 4, name: 'Weighing & Quality Check', desc: 'Digital field scale check & moisture verification.' },
+            { step: 5, name: 'Payout Disbursed to Account', desc: 'Net settlement released immediately.' }
+        ];
+
+        function confirmPayoutListing() {
+            const sellerName = document.getElementById('sellerName').value.trim();
+            const sellerPhone = document.getElementById('sellerPhone').value.trim();
+            const pickupAddress = document.getElementById('pickupAddress').value.trim();
+
+            if (chosenMethod === 'upi' && !document.getElementById('upiId').value.trim()) {
+                alert('Please enter your UPI ID.');
+                return;
+            }
+            if (chosenMethod === 'bank' && !document.getElementById('bankAcc').value.trim()) {
+                alert('Please enter your Bank Account Number.');
+                return;
+            }
+
+            const trackingId = `TRK-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
+            const newRecord = {
+                trackingId: trackingId,
+                farmerName: sellerName,
+                farmerPhone: sellerPhone,
+                pickupAddress: pickupAddress,
+                items: currentBatchDetails,
+                grossAmount: currentGross,
+                deduction: currentDeduction,
+                netPayout: currentNet,
+                paymentMethod: chosenMethod,
+                currentStage: 1, // Starts at stage 1
+                agentName: 'Rajesh Verma',
+                agentPhone: '+91 98234-56789',
+                agentVehicle: 'Tata Ace (MH-12-AZ-4512)',
+                createdAt: new Date().toLocaleString()
+            };
+
+            // Save to LocalStorage
+            let trackings = JSON.parse(localStorage.getItem('farmerTrackings') || '[]');
+            trackings.unshift(newRecord);
+            localStorage.setItem('farmerTrackings', JSON.stringify(trackings));
+
+            // Clear Cart
+            localStorage.removeItem('sellSelectedProducts');
+            localStorage.removeItem('sellSelectedProduct');
+
+            // Render live tracker directly in thank-you screen
+            document.getElementById('payment-step').style.display = 'none';
+            document.getElementById('thank-you-step').style.display = 'block';
+            
+            renderLiveTracker(newRecord, document.getElementById('created-tracking-target'));
+            loadRecentPickups();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Renders the full interactive timeline & agent details
+        function renderLiveTracker(record, targetElement) {
+            const currentStep = record.currentStage || 1;
+            const currentStageObj = TRACKING_STAGES[currentStep - 1];
+
+            targetElement.innerHTML = `
+                <div class="tracking-top-card">
+                    <div>
+                        <div class="tracking-id-badge">
+                            <i class="fa fa-barcode"></i> ${record.trackingId}
+                        </div>
+                        <div style="font-size: 0.9rem; color: #555; margin-top: 4px;">
+                            Booked on: ${record.createdAt} · Farmer: <b>${record.farmerName}</b>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="tracking-status-pill">${currentStageObj.name}</span>
+                        <div style="font-size: 1.15rem; font-weight: 800; color: #1b5e20; margin-top: 4px;">
+                            Net Payout: ₹${Number(record.netPayout).toFixed(2)} (${record.paymentMethod.toUpperCase()})
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Summary -->
+                <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <strong><i class="fa fa-boxes"></i> Produce for Collection:</strong>
+                    <ul style="margin: 0.5rem 0 0 1.2rem; padding: 0; color: #333;">
+                        ${record.items.map(it => `
+                            <li><b>${it.name}</b> — ${it.quantity} ${it.requiredUnit || 'kg'} @ ₹${Number(it.price).toFixed(2)}/unit (Total: ₹${Number(it.totalPrice).toFixed(2)})</li>
+                        `).join('')}
+                    </ul>
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                        <i class="fa fa-map-marker-alt" style="color: #c62828;"></i> <b>Pickup Address:</b> ${record.pickupAddress}
+                    </div>
+                </div>
+
+                <!-- Live Timeline Stepper -->
+                <div class="stepper">
+                    ${TRACKING_STAGES.map(s => {
+                        let stateClass = '';
+                        if (s.step < currentStep) stateClass = 'completed';
+                        else if (s.step === currentStep) stateClass = 'active';
+
+                        return `
+                            <div class="step-item ${stateClass}">
+                                <div class="step-title">
+                                    ${s.step < currentStep ? '<i class="fa fa-check-circle" style="color:#2e7d32;"></i> ' : ''}
+                                    ${s.name}
+                                </div>
+                                <div class="step-desc">${s.desc}</div>
+                                ${s.step === currentStep ? '<div class="step-time"><i class="fa fa-clock"></i> Current Active Status</div>' : ''}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <!-- Assigned Logistics Agent Box -->
+                <div class="agent-info-card">
+                    <div class="agent-avatar"><i class="fa fa-user-shield"></i></div>
+                    <div style="flex: 1;">
+                        <strong style="color: #1b5e20; font-size: 1.05rem;">Assigned Field Agent: ${record.agentName}</strong>
+                        <div style="color: #555; font-size: 0.9rem; margin: 2px 0;">
+                            <i class="fa fa-phone-alt"></i> ${record.agentPhone} · <i class="fa fa-truck"></i> Vehicle: ${record.agentVehicle}
+                        </div>
+                        <div style="font-size: 0.82rem; color: #2e7d32; font-weight: 600;">
+                            Authorized ZeroWasteMart Procurement Representative
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo Simulation Button to advance stages -->
+                <div style="margin-top: 1.5rem; text-align: center; background: #fff8e1; border: 1px dashed #ffa000; border-radius: 8px; padding: 0.8rem;">
+                    <span style="font-size: 0.85rem; color: #b78103; font-weight: 600; display: block; margin-bottom: 0.4rem;">
+                        Demo / Testing Control:
+                    </span>
+                    <button type="button" onclick="advanceStage('${record.trackingId}')" style="background: #ff9800; color: #fff; border: none; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 700; cursor: pointer;">
+                        <i class="fa fa-forward"></i> Simulate Agent Advance to Next Stage
+                    </button>
+                </div>
+            `;
+        }
+
+        // Advance stage for demo testing
+        function advanceStage(id) {
+            let trackings = JSON.parse(localStorage.getItem('farmerTrackings') || '[]');
+            const record = trackings.find(t => t.trackingId === id);
+            if (record) {
+                record.currentStage = (record.currentStage % 5) + 1;
+                localStorage.setItem('farmerTrackings', JSON.stringify(trackings));
+                
+                // Re-render wherever active
+                const panel = document.getElementById('live-tracking-panel');
+                if (panel && panel.style.display !== 'none') {
+                    renderLiveTracker(record, panel);
+                }
+                const target = document.getElementById('created-tracking-target');
+                if (target && target.innerHTML.trim() !== '') {
+                    renderLiveTracker(record, target);
+                }
+                loadRecentPickups();
+            }
+        }
+
+        // Track by Search Input
+        function trackFromInput() {
+            const inputVal = document.getElementById('trackSearchInput').value.trim();
+            if (!inputVal) {
+                alert('Please enter a Tracking ID (e.g. TRK-2026-XXXXXX)');
+                return;
+            }
+
+            const trackings = JSON.parse(localStorage.getItem('farmerTrackings') || '[]');
+            const record = trackings.find(t => t.trackingId.toUpperCase() === inputVal.toUpperCase());
+
+            const panel = document.getElementById('live-tracking-panel');
+            if (!record) {
+                panel.style.display = 'block';
+                panel.innerHTML = `
+                    <div style="text-align: center; color: #c62828; padding: 1.5rem;">
+                        <i class="fa fa-exclamation-circle" style="font-size: 2.5rem; margin-bottom: 0.5rem;"></i>
+                        <h3>Tracking ID Not Found</h3>
+                        <p style="color: #666;">No pickup request found matching "<b>${inputVal}</b>". Please verify the ID.</p>
+                        <button type="button" onclick="document.getElementById('live-tracking-panel').style.display='none'" style="background:#777; color:#fff; border:none; padding:0.5rem 1.5rem; border-radius:4px; cursor:pointer;">Close</button>
+                    </div>
+                `;
+            } else {
+                panel.style.display = 'block';
+                renderLiveTracker(record, panel);
+                panel.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Load sidebar recent pickups
+        function loadRecentPickups() {
+            const trackings = JSON.parse(localStorage.getItem('farmerTrackings') || '[]');
+            const box = document.getElementById('recent-pickups-box');
+            const list = document.getElementById('recent-pickups-list');
+
+            if (trackings.length === 0) {
+                box.style.display = 'none';
+                return;
+            }
+
+            box.style.display = 'block';
+            list.innerHTML = trackings.slice(0, 4).map(t => `
+                <div style="background: #f8fbf5; border: 1px solid #c8e6c9; border-radius: 6px; padding: 0.6rem 0.8rem; cursor: pointer;" onclick="document.getElementById('trackSearchInput').value='${t.trackingId}'; trackFromInput();">
+                    <div style="display:flex; justify-content:space-between; font-weight:700; color:#1b5e20; font-size:0.9rem;">
+                        <span>${t.trackingId}</span>
+                        <span style="font-size:0.75rem; background:#2e7d32; color:#fff; padding:1px 6px; border-radius:10px;">Stage ${t.currentStage}/5</span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #555; margin-top: 3px;">
+                        ${t.items.map(i => i.name).join(', ')} · <b>₹${Number(t.netPayout).toFixed(2)}</b>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize on page load
+        renderMarketDemand();
+        loadRecentPickups();
+    </script>
+</body>
+</html>

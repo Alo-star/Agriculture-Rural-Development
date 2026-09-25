@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaveMart Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #faf5e4;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Container -->
+    <div id="login-container" class="login-container">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div id="dashboard-container" style="display: none;">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">SaveMart Admin Panel</div>
+            <nav>
+                <ul>
+                    <li><a href="#dashboard" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#products"><i class="fas fa-box"></i> Products</a></li>
+                    <li><a href="#orders"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                    <li><a href="#users"><i class="fas fa-users"></i> Users</a></li>
+                    <li><a href="#smart"><i class="fas fa-chart-line"></i> Smart Procurement</a></li>
+                    <li><a href="#ocr"><i class="fas fa-search"></i> OCR</a></li>
+                    <li><a href="../index.html"><i class="fas fa-sign-out-alt"></i> Back to Store</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <h2>Dashboard</h2>
+                <div class="metrics-container">
+                    <div class="metric-card">
+                        <i class="fas fa-box"></i>
+                        <h3>Total Products</h3>
+                        <p id="total-products">0</p>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Active Orders</h3>
+                        <p id="active-orders">0</p>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Registered Users</h3>
+                        <p id="registered-users">0</p>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>Expiry Alerts</h3>
+                        <div class="expiry-details">
+                            <p>Expiring Soon: <strong id="expiring-soon-products">0</strong></p>
+                            <p>Expired: <strong id="expired-products">0</strong></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="notifications">
+                    <h3>Recent Notifications</h3>
+                    <div id="notifications-list"></div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="section">
+                <h2>Product Management</h2>
+                <button class="btn btn-primary" onclick="openAddProductModal()">Add New Product</button>
+                <div class="products-list" id="products-container"></div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders" class="section">
+                <h2>Order Management</h2>
+                <div class="orders-list" id="orders-container"></div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users" class="section">
+                <h2>User Management</h2>
+                <div class="users-list" id="users-container"></div>
+            </section>
+
+            <section id="smart" class="section">
+                <h2>Smart Procurement</h2>
+                <div class="metrics-container">
+                    <div class="metric-card"><i class="fas fa-chart-line"></i><h3>Price reference</h3><p id="smart-market-price">₹40/kg</p></div>
+                    <div class="metric-card"><i class="fas fa-boxes-stacked"></i><h3>Demand gap</h3><p id="smart-demand-gap">0 kg</p></div>
+                    <div class="metric-card"><i class="fas fa-award"></i><h3>Quality checks</h3><p id="smart-quality-count">0</p></div>
+                    <div class="metric-card"><i class="fas fa-route"></i><h3>Open collections</h3><p id="smart-route-count">0</p></div>
+                </div>
+                <div class="table-container">
+                    <h3>Rule settings</h3>
+                    <form id="smart-rules-form" class="row g-3">
+                        <div class="col-md-3"><label class="form-label">Market price (₹/kg)</label><input class="form-control" id="smart-market-input" type="number" min="0" value="40" required></div>
+                        <div class="col-md-3"><label class="form-label">Grade A adjustment</label><input class="form-control" id="smart-grade-a" type="number" value="2" required></div>
+                        <div class="col-md-3"><label class="form-label">Grade C adjustment</label><input class="form-control" id="smart-grade-c" type="number" value="-3" required></div>
+                        <div class="col-md-3"><label class="form-label">High gap threshold (kg)</label><input class="form-control" id="smart-high-gap" type="number" min="1" value="3000" required></div>
+                        <div class="col-12"><button class="btn btn-success" type="submit">Save rules</button><span id="smart-rules-status" class="ms-2"></span></div>
+                    </form>
+                </div>
+                <div class="table-container"><h3>Quality checks</h3><div id="smart-quality-table"></div></div>
+                <div class="table-container"><h3>Nearest-first collection requests</h3><div id="smart-route-table"></div></div>
+                <div class="table-container"><h3>Listing tracking management</h3><div id="smart-tracking-table"></div></div>
+            </section>
+
+            <!-- OCR Section -->
+            <section id="ocr" class="section">
+                <h2>OCR (Optical Character Recognition)</h2>
+                <div class="ocr-container" style="max-width:600px;margin:auto;">
+                    <div class="card p-4 shadow-sm">
+                        <h4 class="mb-3">Extract Text from Image</h4>
+                        <input type="file" id="ocrImageInput" accept="image/*" class="form-control mb-2">
+                        <div class="mb-2">
+                            <label for="ocrLanguage" class="form-label">Language:</label>
+                            <select id="ocrLanguage" class="form-select">
+                                <option value="eng">English</option>
+                                <option value="fra">French</option>
+                                <option value="deu">German</option>
+                                <option value="spa">Spanish</option>
+                                <option value="chi_sim">Chinese Simplified</option>
+                                <option value="jpn">Japanese</option>
+                                <option value="kor">Korean</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary mb-2" onclick="processOCRImage()">Extract Text</button>
+                        <div id="ocrResult" style="display:none;">
+                            <h5>Extracted Text:</h5>
+                            <div id="extracted-text" class="border rounded p-2 bg-light"></div>
+                            <p id="confidence-score" class="mt-2"></p>
+                        </div>
+                        <div id="ocrError" class="alert alert-danger mt-2" style="display:none;"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Product Modal -->
+        <div class="modal fade" id="productModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add/Edit Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="product-form">
+                            <input type="hidden" id="product-id">
+                            <div class="mb-3">
+                                <label class="form-label">Product Name</label>
+                                <input type="text" class="form-control" id="product-name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" id="product-description" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Price</label>
+                                <input type="number" class="form-control" id="product-price" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Unit</label>
+                                <input type="text" class="form-control" id="product-unit" placeholder="e.g., per lb, each">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Required Quantity (kg/ton)</label>
+                                <input type="number" class="form-control" id="product-required-quantity"
+                                       step="0.01" min="0.01" placeholder="e.g. 25" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Required Unit</label>
+                                <select class="form-control" id="product-required-unit">
+                                    <option value="kg" selected>kg</option>
+                                    <option value="ton">ton</option>
+                                    <option value="per lb">per lb</option>
+                                    <option value="each">each</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Stock</label>
+                                <input type="number" class="form-control" id="product-stock" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Expiry Date</label>
+                                <input type="date" class="form-control" id="product-expiry-date">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" id="product-category" required>
+                                    <option value="Fruits">Fruits</option>
+                                    <option value="Vegetables">Vegetables</option>
+                                    <option value="Crops">Crops</option>
+                                    <option value="Meat">Meat</option>
+                                    <option value="Beverages">Beverages</option>
+                                    <option value="Dairy">Dairy</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Brand</label>
+                                <input type="text" class="form-control" id="product-brand">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Image URL</label>
+                                <input type="url" class="form-control" id="product-image">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="saveProduct()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Status Modal -->
+        <div class="modal fade" id="orderModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Order Status</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="order-form">
+                            <input type="hidden" id="order-id">
+                            <div class="mb-3">
+                                <label class="form-label">Order Status</label>
+                                <select class="form-control" id="order-status">
+                                    <option value="pending">Pending</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="cancelled">Cancelled</option>
+                                    <option value="refunded">Refunded</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="updateOrder()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/ocr.js"></script>
+</body>
+</html>

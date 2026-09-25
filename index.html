@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZeroWasteMart - Eco-Friendly Marketplace</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <meta name="description" content="ZeroWasteMart - Your eco-friendly marketplace for buying, selling, and saving surplus farm produce and groceries.">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <style>
+        body {
+            background: #faf5e4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #1f2933;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            height: 80px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            padding: 0 2rem;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            text-decoration: none;
+            gap: 0.5rem;
+        }
+        
+        .nav-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            object-fit: cover;
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-link:hover {
+            background: #f0f8f0;
+            color: #2e7d32;
+        }
+        
+        .nav-link.active {
+            background: #2e7d32;
+            color: #fff;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn-login {
+            background: transparent;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .btn-signup {
+            background: #2e7d32;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            background: #e53935;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .hero {
+            background: #f3f3ed;
+            border-radius: 2rem;
+            margin: 2rem auto;
+            max-width: 1100px;
+            display: flex;
+            align-items: center;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+        }
+        
+        .hero-img {
+            width: 140px;
+            height: 140px;
+            object-fit: contain;
+            border-radius: 1.5rem;
+            margin-right: 2.5rem;
+            background: #fff;
+            padding: 16px;
+        }
+        
+        .hero-content h1 { font-size: 2.5rem; font-weight: bold; margin-bottom: 0.8rem; }
+        .hero-content p { font-size: 1.15rem; color: #555; margin-bottom: 1.5rem; }
+        .hero-content button {
+            background: #2e7d32;
+            color: #fff;
+            font-size: 1.1rem;
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin: 2.5rem 0 1rem 2rem;
+            color: #1b5e20;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding: 1rem 2rem 2rem 2rem;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .product-card {
+            min-width: 230px;
+            max-width: 230px;
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            padding: 1.2rem 1rem 1.3rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            scroll-snap-align: start;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-sizing: border-box;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .product-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 1rem;
+            margin-bottom: 0.8rem;
+            background: #f8f8f3;
+        }
+        
+        .product-card .name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+            text-align: center;
+            color: #1f2933;
+        }
+        
+        /* Clean price display - no double ₹ */
+        .product-card .price {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 0.3rem;
+            text-align: center;
+        }
+        
+        .product-card .desc {
+            font-size: 0.85rem;
+            color: #666;
+            text-align: center;
+            line-height: 1.3;
+            margin-bottom: 0.6rem;
+            min-height: 2.2rem;
+        }
+
+        /* Fixed Required Badge */
+        .quantity-control.fixed-requirement {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin: 0.3rem auto;
+            padding: 0.35rem 0.65rem;
+            background: #eef7ee;
+            border: 1.5px solid #a9c9a9;
+            border-radius: 0.45rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .quantity-control.fixed-requirement .qty-label { color: #3b533b; font-weight: 600; }
+        .quantity-control.fixed-requirement .qty-badge {
+            background: #2e7d32;
+            color: #ffffff;
+            padding: 0.2rem 0.55rem;
+            border-radius: 0.35rem;
+            font-weight: 700;
+        }
+
+        .total-payout-badge {
+            width: 100%;
+            box-sizing: border-box;
+            background: #e8f5e9;
+            border: 1px dashed #2e7d32;
+            border-radius: 0.45rem;
+            padding: 0.35rem 0.5rem;
+            margin: 0.3rem 0 0.8rem 0;
+            text-align: center;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #1b5e20;
+        }
+        
+        .product-card .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        
+        .product-card .card-actions button {
+            transition: all 0.2s ease;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .product-card .card-actions button:first-child {
+            background: #2e7d32;
+            color: #fff;
+            border: none;
+            padding: 0.55rem 0.8rem;
+            flex: 1;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        
+        .product-card .card-actions button:first-child:hover { background: #1b5e20; }
+        .product-card .card-actions button:last-child {
+            background: #f0f8f0;
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+            padding: 0.55rem 0.75rem;
+        }
+
+        .notification-bell {
+            position: fixed;
+            top: 100px;
+            right: 32px;
+            z-index: 100;
+            background: #fff;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+        }
+        
+        .notification-bell .fa-bell { font-size: 1.4rem; color: #2e7d32; }
+        .notification-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: #e53935;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .notification-list {
+            position: fixed;
+            top: 160px;
+            right: 32px;
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            padding: 1.2rem 1.5rem;
+            min-width: 280px;
+            z-index: 101;
+            display: none;
+        }
+        .notification-list.active { display: block; }
+        
+        .page-content { padding-top: 80px; }
+    </style>
+</head>
+<body>
+    <div class="page-content" id="page-content">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index.html" class="nav-logo">
+                    <img src="images/zerowastemart-logo.svg" alt="ZeroWasteMart" onerror="this.src='https://placehold.co/40x40/2e7d32/white?text=ZWM'">
+                    ZeroWasteMart
+                </a>
+                
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link active"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="sell-product.html" class="nav-link"><i class="fa fa-plus-circle"></i> Sell Produce</a></li>
+                    <li><a href="admin/admin.html" class="nav-link"><i class="fa fa-cog"></i> Admin</a></li>
+                </ul>
+                
+                <div class="auth-buttons" id="auth-buttons">
+                    <a href="login.html" class="btn-login">Login</a>
+                    <a href="signup.html" class="btn-signup">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="notification-bell" id="notification-bell">
+            <i class="fa fa-bell"></i>
+            <span class="notification-badge" id="notification-badge" style="display:none;">0</span>
+        </div>
+        <div class="notification-list" id="notification-list">
+            <h4 style="margin: 0 0 1rem 0; font-weight: bold;">Expiring Soon</h4>
+            <ul id="notification-list-items" style="list-style:none; padding:0; margin:0;"></ul>
+        </div>
+
+        <div class="hero">
+            <img src="images/zerowastemart-logo.svg" class="hero-img" alt="ZeroWasteMart Logo" onerror="this.src='https://placehold.co/140x140/2e7d32/white?text=ZWM'">
+            <div class="hero-content">
+                <h1>Zero Waste, Big Savings</h1>
+                <p>Guaranteed purchase prices for your harvest. Sell directly to verified buyers with zero middleman commissions and prompt farmgate pickups!</p>
+                <button onclick="scrollToProducts()">Browse Current Demands</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Product Sections Container -->
+        <div id="main-sections"></div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // 1. Comprehensive Master Catalog with Fruits, Vegetables, and Crops + REAL CDN IMAGES
+        const MASTER_PRODUCTS = [
+            // --- FRUITS ---
+            {
+                id: 1,
+                name: 'Organic Bananas',
+                category: 'Fruits',
+                price: 28.00,
+                requiredQuantity: 50,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&auto=format&fit=crop&q=80',
+                description: 'A bunch of fresh, organic farm bananas.'
+            },
+            {
+                id: 2,
+                name: 'Apples',
+                category: 'Fruits',
+                price: 90.00,
+                requiredQuantity: 30,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&auto=format&fit=crop&q=80',
+                description: 'Crisp red apples, sorted and crate packed.'
+            },
+            {
+                id: 3,
+                name: 'Mangoes',
+                category: 'Fruits',
+                price: 80.00,
+                requiredQuantity: 40,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&auto=format&fit=crop&q=80',
+                description: 'Sweet, juicy ripe farm mangoes.'
+            },
+            {
+                id: 4,
+                name: 'Oranges',
+                category: 'Fruits',
+                price: 45.00,
+                requiredQuantity: 30,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1547514701-42782101795e?w=400&auto=format&fit=crop&q=80',
+                description: 'Juicy oranges, packed with Vitamin C.'
+            },
+            {
+                id: 5,
+                name: 'Grapes',
+                category: 'Fruits',
+                price: 65.00,
+                requiredQuantity: 25,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=400&auto=format&fit=crop&q=80',
+                description: 'Sweet seedless green grapes in crates.'
+            },
+
+            // --- VEGETABLES ---
+            {
+                id: 6,
+                name: 'Tomatoes',
+                category: 'Vegetables',
+                price: 25.00,
+                requiredQuantity: 40,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&auto=format&fit=crop&q=80',
+                description: 'Fresh red ripe tomatoes, sold in crates.'
+            },
+            {
+                id: 7,
+                name: 'Potatoes',
+                category: 'Vegetables',
+                price: 20.00,
+                requiredQuantity: 100,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&auto=format&fit=crop&q=80',
+                description: 'Clean farm potatoes in 50kg bulk sacks.'
+            },
+            {
+                id: 8,
+                name: 'Onions',
+                category: 'Vegetables',
+                price: 32.00,
+                requiredQuantity: 50,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=400&auto=format&fit=crop&q=80',
+                description: 'Nashik red onions in ventilated mesh bags.'
+            },
+            {
+                id: 9,
+                name: 'Carrots',
+                category: 'Vegetables',
+                price: 35.00,
+                requiredQuantity: 30,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&auto=format&fit=crop&q=80',
+                description: 'Fresh crisp organic carrots from local farms.'
+            },
+            {
+                id: 10,
+                name: 'Green Bell Pepper',
+                category: 'Vegetables',
+                price: 40.00,
+                requiredQuantity: 25,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&auto=format&fit=crop&q=80',
+                description: 'Crisp and fresh green capsicum / bell peppers.'
+            },
+            {
+                id: 11,
+                name: 'Broccoli',
+                category: 'Vegetables',
+                price: 50.00,
+                requiredQuantity: 20,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400&auto=format&fit=crop&q=80',
+                description: 'Fresh green broccoli crowns rich in fiber.'
+            },
+
+            // --- CROPS & GRAINS ---
+            {
+                id: 12,
+                name: 'Rice',
+                category: 'Crops',
+                price: 42.00,
+                requiredQuantity: 100,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80',
+                description: 'Premium quality raw rice, freshly harvested.'
+            },
+            {
+                id: 13,
+                name: 'Wheat',
+                category: 'Crops',
+                price: 28.00,
+                requiredQuantity: 100,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&auto=format&fit=crop&q=80',
+                description: 'Golden harvested wheat grains in sacks.'
+            },
+            {
+                id: 14,
+                name: 'Corn',
+                category: 'Crops',
+                price: 24.00,
+                requiredQuantity: 50,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=400&auto=format&fit=crop&q=80',
+                description: 'Fresh yellow corn kernels harvested from local farms.'
+            },
+            {
+                id: 15,
+                name: 'Barley',
+                category: 'Crops',
+                price: 26.00,
+                requiredQuantity: 50,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1543257580-7269da773bf5?w=400&auto=format&fit=crop&q=80',
+                description: 'Whole barley grains for flour and porridge.'
+            },
+            {
+                id: 16,
+                name: 'Millet',
+                category: 'Crops',
+                price: 38.00,
+                requiredQuantity: 50,
+                requiredUnit: 'kg',
+                image: 'https://images.unsplash.com/photo-1607672632458-9eb56696346b?w=400&auto=format&fit=crop&q=80',
+                description: 'Nutritious pearl millet grains, high demand staple.'
+            },
+            {
+                id: 17,
+                name: 'Bulk Feed Maize',
+                category: 'Crops',
+                price: 22000.00,
+                requiredQuantity: 1,
+                requiredUnit: 'ton',
+                image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=400&auto=format&fit=crop&q=80',
+                description: 'Bulk industrial yellow maize lot (1 Ton).'
+            }
+        ];
+
+        // 2. Ensure localStorage always has valid products with images & vegetables
+        function syncMasterProducts() {
+            let stored = JSON.parse(localStorage.getItem('products') || '[]');
+            // Re-sync if empty or if missing vegetables/broken images
+            const needsSync = stored.length === 0 || !stored.some(p => p.category === 'Vegetables') || stored.some(p => p.image && p.image.startsWith('images/'));
+            if (needsSync) {
+                localStorage.setItem('products', JSON.stringify(MASTER_PRODUCTS));
+            }
+        }
+        syncMasterProducts();
+
+        // 3. Render Modern Home with Fixed Portal Demands
+        function renderModernHome() {
+            let productsList = JSON.parse(localStorage.getItem('products') || '[]').slice();
+            if (productsList.length === 0) productsList = MASTER_PRODUCTS.slice();
+
+            const categories = {};
+            productsList.forEach(product => {
+                let cat = product.category || 'Other';
+                if (cat.toLowerCase() === 'produce') cat = 'Fruits';
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push(product);
+            });
+
+            // Ensure Fruits, Vegetables, Crops order
+            const orderedCats = ['Fruits', 'Vegetables', 'Crops'];
+            Object.keys(categories).forEach(cat => {
+                if (!orderedCats.includes(cat)) orderedCats.push(cat);
+            });
+
+            let html = '';
+            orderedCats.forEach(cat => {
+                if (!categories[cat] || categories[cat].length === 0) return;
+                html += `<div class='section-title'><i class="fa fa-leaf"></i> ${cat}</div>`;
+                html += `<div class='carousel'>`;
+                
+                categories[cat].forEach(product => {
+                    const reqQty = Number(product.requiredQuantity) || Number(product.quantity) || 1;
+                    const reqUnit = product.requiredUnit || product.unit || 'kg';
+                    const unitRate = Number(product.price) || 0;
+                    const totalBatchValue = unitRate * reqQty;
+
+                    const formattedRate = unitRate.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    const formattedTotal = totalBatchValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                    html += `<div class='product-card'>
+                        <img src='${product.image}' alt='${product.name}' onerror="this.src='https://placehold.co/120x120/e8f5e9/2e7d32?text=${encodeURIComponent(product.name)}'">
+                        <div class='name'>${product.name}</div>
+                        
+                        <div class='price' id='price-${product.id}'>
+                            ₹${formattedRate} <span style="font-size: 0.8rem; font-weight: normal; color: #666;">/ ${reqUnit}</span>
+                        </div>
+                        
+                        <div class='desc'>${product.description || ''}</div>
+                        
+                        <!-- Fixed Requirement Badge set by Admin -->
+                        <div class='quantity-control fixed-requirement' title='Procurement demand fixed by portal'>
+                            <span class='qty-label'>Required:</span>
+                            <span class='qty-badge'>${reqQty} ${reqUnit}</span>
+                        </div>
+
+                        <!-- Auto-calculated Batch Value -->
+                        <div class='total-payout-badge'>
+                            Total Value: ₹${formattedTotal}
+                        </div>
+
+                        <div class='card-actions'>
+                            <button onclick='addToCart(${JSON.stringify(product).replace(/'/g, "\\'")}, ${reqQty})'>
+                                <i class="fa fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button onclick="window.location.href='sell-product.html'" title="Open Farmer Portal">
+                                <i class="fa fa-plus-circle"></i>
+                            </button>
+                        </div>
+                    </div>`;
+                });
+                html += `</div>`;
+            });
+            document.getElementById('main-sections').innerHTML = html;
+        }
+
+        // 4. Add to Cart: Transfers the current fixed demand into sell-product.html
+        function addToCart(product, quantity) {
+            const reqQty = Number(quantity) || Number(product.requiredQuantity) || Number(product.quantity) || 1;
+            const reqUnit = product.requiredUnit || product.unit || (product.unit && product.unit.includes('ton') ? 'ton' : 'kg');
+            const unitPrice = Number(product.price) || 0;
+
+            const cartItem = {
+                id: product.id || product.name,
+                name: product.name,
+                category: product.category || 'Produce',
+                price: unitPrice,
+                quantity: reqQty,              // Fixed to required quantity
+                requiredQuantity: reqQty,      // Preserved requirement
+                requiredUnit: reqUnit,
+                unit: reqUnit,
+                totalPrice: unitPrice * reqQty,
+                image: product.image
+            };
+
+            const selectedProducts = JSON.parse(localStorage.getItem('sellSelectedProducts')) || [];
+            const existingIndex = selectedProducts.findIndex(item => (item.id || item.name) === cartItem.id);
+            
+            if (existingIndex > -1) {
+                selectedProducts[existingIndex] = cartItem;
+            } else {
+                selectedProducts.push(cartItem);
+            }
+
+            localStorage.setItem('sellSelectedProducts', JSON.stringify(selectedProducts));
+            localStorage.setItem('sellSelectedProduct', JSON.stringify(cartItem));
+            
+            window.location.href = 'sell-product.html';
+        }
+
+        function scrollToProducts() {
+            const firstSection = document.querySelector('.section-title');
+            if (firstSection) firstSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateAuthStatus() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            const authButtons = document.getElementById('auth-buttons');
+            if (user && authButtons) {
+                authButtons.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: #2e7d32; font-weight: 600;">
+                        <i class="fa fa-user"></i>
+                        <span>${user.firstName || 'Farmer'}</span>
+                    </div>
+                    <button class="logout-btn" onclick="localStorage.removeItem('currentUser'); window.location.reload();">Logout</button>
+                `;
+            }
+        }
+
+        renderModernHome();
+        updateAuthStatus();
+
+        // Listen for portal admin updates
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'products') renderModernHome();
+        });
+        window.addEventListener('focus', renderModernHome);
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broker Dashboard - ZeroWasteMart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --green: #2e7d32; --deep-green: #1b5e20; --cream: #faf5e4; --ink: #1f2933; --muted: #68736b; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--cream); color: var(--ink); font-family: 'Segoe UI', Arial, sans-serif; }
+        .navbar { background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.1); }
+        .nav-container { max-width: 1200px; height: 80px; margin: auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+        .nav-logo { display: flex; align-items: center; gap: .6rem; color: var(--green); font-size: 1.5rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+        .nav-logo img { width: 40px; height: 40px; }
+        .nav-menu { display: flex; align-items: center; gap: .7rem; list-style: none; margin: 0; padding: 0; }
+        .nav-link { color: var(--ink); padding: .7rem 1rem; border-radius: .55rem; text-decoration: none; font-weight: 600; }
+        .nav-link:hover, .nav-link.active { background: var(--green); color: #fff; }
+        .user-menu { display: flex; align-items: center; gap: 1rem; color: var(--green); font-weight: 600; }
+        .logout-btn { border: 0; border-radius: .55rem; background: #e53935; color: #fff; padding: .7rem 1rem; font-weight: 700; cursor: pointer; }
+        .page { max-width: 1200px; margin: auto; padding: 2rem; }
+        .hero { border-radius: 1.2rem; padding: 3.5rem 4rem; color: #fff; background: linear-gradient(120deg, #267b31, #48a951); box-shadow: 0 10px 28px rgba(46,125,50,.18); }
+        .eyebrow { margin: 0 0 .7rem; font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+        .hero h1 { margin: 0 0 .8rem; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.05; }
+        .hero p { max-width: 650px; margin: 0; font-size: 1.1rem; line-height: 1.6; color: rgba(255,255,255,.9); }
+        .section-title { display: flex; justify-content: space-between; align-items: center; margin: 2.5rem 0 1rem; }
+        .section-title h2 { margin: 0; font-size: 1.65rem; color: var(--green); }
+        .section-title span { color: var(--muted); font-size: .9rem; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+        .stat-card, .opportunity-card { background: #fff; border-radius: 1rem; box-shadow: 0 7px 22px rgba(54,72,45,.09); }
+        .stat-card { padding: 1.4rem; display: flex; align-items: center; gap: 1rem; }
+        .stat-icon { width: 46px; height: 46px; display: grid; place-items: center; border-radius: .75rem; background: #eef8ed; color: var(--green); font-size: 1.2rem; }
+        .stat-card strong { display: block; font-size: 1.5rem; }
+        .stat-card span { color: var(--muted); font-size: .9rem; }
+        .opportunities { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .opportunity-card { padding: 1.4rem; }
+        .opportunity-card i { color: var(--green); font-size: 1.35rem; }
+        .opportunity-card h3 { margin: 1rem 0 .45rem; }
+        .opportunity-card p { color: var(--muted); line-height: 1.5; margin: 0 0 1rem; }
+        .action { display: inline-flex; align-items: center; gap: .5rem; color: var(--green); font-weight: 700; text-decoration: none; }
+        @media (max-width: 800px) { .nav-container { height: auto; padding: 1rem; flex-wrap: wrap; } .nav-menu { order: 3; width: 100%; justify-content: center; } .page { padding: 1rem; } .hero { padding: 2.5rem 1.5rem; } .stats, .opportunities { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a class="nav-logo" href="index.html"><img src="images/zerowastemart-logo.svg" alt="ZeroWasteMart">ZeroWasteMart</a>
+            <ul class="nav-menu">
+                <li><a class="nav-link" href="broker-home.html"><i class="fa fa-home"></i> Home</a></li>
+                <li><a class="nav-link active" href="broker-dashboard.html"><i class="fa fa-chart-line"></i> Broker Hub</a></li>
+            </ul>
+            <div class="user-menu"><span id="user-name"></span><button class="logout-btn" onclick="logout()"><i class="fa fa-sign-out-alt"></i> Logout</button></div>
+        </div>
+    </nav>
+
+    <main class="page">
+        <section class="hero">
+            <p class="eyebrow">Broker workspace</p>
+            <h1>Build better connections.</h1>
+            <p>Manage opportunities, connect surplus products with the right buyers, and help local trade move with less waste.</p>
+        </section>
+
+        <div class="section-title"><h2>Your Overview</h2><span>Updated just now</span></div>
+        <section class="stats">
+            <div class="stat-card"><div class="stat-icon"><i class="fa fa-boxes-stacked"></i></div><div><strong id="listing-count">0</strong><span>Available listings</span></div></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fa fa-handshake"></i></div><div><strong>0</strong><span>Active connections</span></div></div>
+            <div class="stat-card"><div class="stat-icon"><i class="fa fa-leaf"></i></div><div><strong>0 kg</strong><span>Waste redirected</span></div></div>
+        </section>
+
+    </main>
+    <script>
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (!user || user.role !== 'broker') window.location.href = 'login.html';
+        else {
+            document.getElementById('user-name').textContent = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            document.getElementById('listing-count').textContent = products.filter(product => product.available !== false).length;
+        }
+        function logout() { localStorage.removeItem('currentUser'); window.location.href = 'broker-home.html?loggedOut=1'; }
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ZeroWasteMart</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #faf5e4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        
+        .welcome-container {
+            background: #fff;
+            border-radius: 1.5rem;
+            padding: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 400px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: #f8f8f3;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #2e7d32;
+            margin: 0 auto 2rem auto;
+        }
+        
+        h1 {
+            color: #2e7d32;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .loading-text {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2e7d32;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="logo">
+            <i class="fa fa-leaf"></i>
+        </div>
+        <h1>Welcome to ZeroWasteMart</h1>
+        <p>Your eco-friendly marketplace for sustainable shopping</p>
+        <div class="loading-text">
+            Starting up...<span class="spinner"></span>
+        </div>
+    </div>
+
+    <script>
+        // Redirect to loading page after 2 seconds
+        setTimeout(() => {
+            window.location.href = 'loading.html';
+        }, 2000);
+    </script>
+</body>
+</html> 

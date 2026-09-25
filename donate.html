@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Donate - ZeroWasteMart</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <style>
+        body {
+            background: #faf5e4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding-top: 80px;
+        }
+        
+        /* Navigation Bar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 0 2rem;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            text-decoration: none;
+        }
+        
+        .nav-logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-link:hover {
+            background: #f0f8f0;
+            color: #2e7d32;
+        }
+        
+        .nav-link.active {
+            background: #2e7d32;
+            color: #fff;
+        }
+        
+        .cart-badge {
+            background: #e53935;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn-login {
+            background: transparent;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: #2e7d32;
+            color: #fff;
+        }
+        
+        .btn-signup {
+            background: #2e7d32;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-signup:hover {
+            background: #1b5e20;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+            }
+            
+            .btn-login, .btn-signup {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
+        /* Donate Page Styles */
+        .donate-hero {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: #fff;
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .donate-hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .donate-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .donate-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .donate-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .donate-form {
+            background: #fff;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+        }
+        
+        .donate-form h2 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #2e7d32;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2e7d32;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .donate-btn {
+            background: #2e7d32;
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        
+        .donate-btn:hover {
+            background: #1b5e20;
+        }
+        
+        .donate-info {
+            background: #f8f8f3;
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+        
+        .donate-info h2 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #2e7d32;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .info-item i {
+            color: #2e7d32;
+            font-size: 1.5rem;
+            margin-top: 0.2rem;
+        }
+        
+        .info-item div h3 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .info-item div p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .donation-categories {
+            background: #fff;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            margin-bottom: 3rem;
+        }
+        
+        .donation-categories h2 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #2e7d32;
+            text-align: center;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .category-card {
+            background: #f8f8f3;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-card i {
+            font-size: 3rem;
+            color: #2e7d32;
+            margin-bottom: 1rem;
+        }
+        
+        .category-card h3 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .category-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .donate-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .donate-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Enhanced Responsive Design */
+        
+        /* Large Desktop */
+        @media (min-width: 1400px) {
+            .donate-container {
+                max-width: 1400px;
+            }
+            
+            .donate-hero {
+                padding: 5rem 3rem;
+            }
+            
+            .donate-hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .donate-hero p {
+                font-size: 1.4rem;
+                max-width: 700px;
+            }
+            
+            .donate-grid {
+                gap: 4rem;
+            }
+            
+            .donate-form, .donate-info {
+                padding: 3rem;
+            }
+            
+            .donation-categories {
+                padding: 3rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 2rem;
+            }
+        }
+        
+        /* Desktop */
+        @media (max-width: 1200px) {
+            .donate-container {
+                padding: 0 1.5rem;
+            }
+            
+            .donate-hero {
+                padding: 3rem 2rem;
+            }
+            
+            .donate-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .donate-hero p {
+                font-size: 1.1rem;
+            }
+            
+            .donate-grid {
+                gap: 2.5rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+        
+        /* Tablet Landscape */
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 0 1.5rem;
+            }
+            
+            .nav-menu {
+                gap: 1rem;
+            }
+            
+            .nav-link {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .auth-buttons {
+                gap: 0.8rem;
+            }
+            
+            .btn-login, .btn-signup {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.85rem;
+            }
+            
+            .donate-hero {
+                padding: 2.5rem 1.5rem;
+            }
+            
+            .donate-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .donate-hero p {
+                font-size: 1rem;
+            }
+            
+            .donate-grid {
+                gap: 2rem;
+            }
+            
+            .donate-form, .donate-info {
+                padding: 1.5rem;
+            }
+            
+            .donation-categories {
+                padding: 1.5rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.2rem;
+            }
+            
+            .category-card {
+                padding: 1.2rem;
+            }
+            
+            .category-card i {
+                font-size: 2.5rem;
+            }
+            
+            .category-card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .category-card p {
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* Tablet Portrait */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                border-top: 1px solid #eee;
+                gap: 0;
+                z-index: 999;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-item {
+                width: 100%;
+            }
+            
+            .nav-link {
+                width: 100%;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                justify-content: flex-start;
+                font-size: 1rem;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+                padding: 1rem 0;
+            }
+            
+            .btn-login, .btn-signup {
+                width: 100%;
+                justify-content: center;
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+            }
+            
+            .nav-logo {
+                font-size: 1.3rem;
+            }
+            
+            .nav-logo img {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .donate-hero {
+                padding: 2rem 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .donate-hero h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .donate-hero p {
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+            
+            .donate-container {
+                padding: 0 1rem;
+            }
+            
+            .donate-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .donate-form, .donate-info {
+                padding: 1.2rem;
+                border-radius: 1.2rem;
+            }
+            
+            .donate-form h2, .donate-info h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1.2rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1.2rem;
+            }
+            
+            .form-group label {
+                font-size: 0.95rem;
+                margin-bottom: 0.4rem;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 0.7rem;
+                font-size: 0.95rem;
+            }
+            
+            .donate-btn {
+                padding: 0.9rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .donation-categories {
+                padding: 1.2rem;
+                border-radius: 1.2rem;
+                margin-bottom: 2rem;
+            }
+            
+            .donation-categories h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1.2rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .category-card {
+                padding: 1rem;
+                border-radius: 0.8rem;
+            }
+            
+            .category-card i {
+                font-size: 2.5rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .category-card h3 {
+                font-size: 1rem;
+                margin-bottom: 0.4rem;
+            }
+            
+            .category-card p {
+                font-size: 0.85rem;
+                line-height: 1.5;
+            }
+            
+            .info-item {
+                margin-bottom: 1.2rem;
+                gap: 0.8rem;
+            }
+            
+            .info-item i {
+                font-size: 1.3rem;
+                margin-top: 0.1rem;
+            }
+            
+            .info-item div h3 {
+                font-size: 1rem;
+                margin-bottom: 0.4rem;
+            }
+            
+            .info-item div p {
+                font-size: 0.85rem;
+                line-height: 1.5;
+            }
+        }
+        
+        /* Mobile Large */
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0 0.8rem;
+            }
+            
+            .nav-logo {
+                font-size: 1.2rem;
+            }
+            
+            .nav-logo img {
+                width: 30px;
+                height: 30px;
+                margin-right: 0.4rem;
+            }
+            
+            .mobile-menu-btn {
+                font-size: 1.3rem;
+                padding: 0.4rem;
+            }
+            
+            .donate-hero {
+                padding: 1.5rem 0.8rem;
+                margin-bottom: 1.5rem;
+                border-radius: 1.2rem;
+            }
+            
+            .donate-hero h1 {
+                font-size: 1.6rem;
+                margin-bottom: 0.6rem;
+            }
+            
+            .donate-hero p {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+            
+            .donate-container {
+                padding: 0 0.8rem;
+            }
+            
+            .donate-grid {
+                gap: 1.2rem;
+            }
+            
+            .donate-form, .donate-info {
+                padding: 1rem;
+                border-radius: 1rem;
+            }
+            
+            .donate-form h2, .donate-info h2 {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1rem;
+            }
+            
+            .form-group label {
+                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+                border-radius: 0.4rem;
+            }
+            
+            .donate-btn {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.95rem;
+            }
+            
+            .donation-categories {
+                padding: 1rem;
+                border-radius: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .donation-categories h2 {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+            
+            .category-card {
+                padding: 0.8rem;
+                border-radius: 0.6rem;
+            }
+            
+            .category-card i {
+                font-size: 2rem;
+                margin-bottom: 0.6rem;
+            }
+            
+            .category-card h3 {
+                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .category-card p {
+                font-size: 0.75rem;
+                line-height: 1.3;
+            }
+            
+            .info-item {
+                margin-bottom: 1rem;
+                gap: 0.6rem;
+            }
+            
+            .info-item i {
+                font-size: 1.2rem;
+                margin-top: 0.1rem;
+            }
+            
+            .info-item div h3 {
+                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .info-item div p {
+                font-size: 0.8rem;
+                line-height: 1.4;
+            }
+        }
+        
+        /* Mobile Small */
+        @media (max-width: 360px) {
+            .navbar {
+                padding: 0 0.6rem;
+            }
+            
+            .nav-logo {
+                font-size: 1.1rem;
+            }
+            
+            .nav-logo img {
+                width: 28px;
+                height: 28px;
+                margin-right: 0.3rem;
+            }
+            
+            .donate-hero {
+                padding: 1.2rem 0.6rem;
+            }
+            
+            .donate-hero h1 {
+                font-size: 1.4rem;
+            }
+            
+            .donate-hero p {
+                font-size: 0.85rem;
+            }
+            
+            .donate-container {
+                padding: 0 0.6rem;
+            }
+            
+            .donate-form, .donate-info {
+                padding: 0.8rem;
+            }
+            
+            .donate-form h2, .donate-info h2 {
+                font-size: 1.2rem;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+            
+            .donate-btn {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .category-card {
+                padding: 0.6rem;
+            }
+            
+            .category-card i {
+                font-size: 1.8rem;
+            }
+            
+            .category-card h3 {
+                font-size: 0.85rem;
+            }
+            
+            .category-card p {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Landscape orientation adjustments */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .navbar {
+                height: 60px;
+            }
+            
+            .nav-container {
+                height: 60px;
+            }
+            
+            .nav-menu {
+                top: 60px;
+            }
+            
+            body {
+                padding-top: 60px;
+            }
+            
+            .donate-hero {
+                padding: 1.5rem 2rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .donate-hero h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .donate-hero p {
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .category-card i {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+        
+        /* Reduced motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .category-card,
+            .donate-btn,
+            .nav-link,
+            .btn-login,
+            .btn-signup {
+                transition: none !important;
+            }
+            
+            .category-card:hover {
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/zerowastemart-logo.svg" alt="ZeroWasteMart" style="height: 40px; width: auto;">
+                ZeroWasteMart
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="sell-product.html" class="nav-link">
+                        <i class="fa fa-plus-circle"></i>
+                        <span>Sell</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin/admin.html" class="nav-link">
+                        <i class="fa fa-cog"></i>
+                        <span>Admin</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="auth-buttons" id="auth-buttons">
+                <a href="#" class="btn-login" id="login-btn">
+                    <i class="fa fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <a href="#" class="btn-signup" id="signup-btn">
+                    <i class="fa fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Donate Hero Section -->
+    <div class="donate-hero">
+        <h1>Make a Difference Today</h1>
+        <p>Donate your surplus items to help reduce waste and support your community. Every donation counts towards a more sustainable future.</p>
+    </div>
+
+    <div class="donate-container">
+        <!-- Donation Categories -->
+        <div class="donation-categories">
+            <h2>What Can You Donate?</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="selectCategory('groceries')">
+                    <i class="fa fa-shopping-basket"></i>
+                    <h3>Groceries</h3>
+                    <p>Non-perishable food items, canned goods, and packaged foods</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('produce')">
+                    <i class="fa fa-apple-alt"></i>
+                    <h3>Fresh Produce</h3>
+                    <p>Fruits, vegetables, and other fresh food items</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('household')">
+                    <i class="fa fa-home"></i>
+                    <h3>Household Items</h3>
+                    <p>Cleaning supplies, toiletries, and home essentials</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('clothing')">
+                    <i class="fa fa-tshirt"></i>
+                    <h3>Clothing</h3>
+                    <p>Gently used clothing and accessories</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('electronics')">
+                    <i class="fa fa-laptop"></i>
+                    <h3>Electronics</h3>
+                    <p>Working electronics and gadgets</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('books')">
+                    <i class="fa fa-book"></i>
+                    <h3>Books & Media</h3>
+                    <p>Books, magazines, and educational materials</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donate Form and Info -->
+        <div class="donate-grid">
+            <div class="donate-form">
+                <h2>Donation Form</h2>
+                <form id="donate-form">
+                    <div class="form-group">
+                        <label for="donor-name">Your Name *</label>
+                        <input type="text" id="donor-name" name="donor-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="donor-email">Email Address *</label>
+                        <input type="email" id="donor-email" name="donor-email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="donor-phone">Phone Number</label>
+                        <input type="tel" id="donor-phone" name="donor-phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-category">Item Category *</label>
+                        <select id="item-category" name="item-category" required>
+                            <option value="">Select a category</option>
+                            <option value="groceries">Groceries</option>
+                            <option value="produce">Fresh Produce</option>
+                            <option value="household">Household Items</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="books">Books & Media</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-name">Item Name *</label>
+                        <input type="text" id="item-name" name="item-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-description">Description</label>
+                        <textarea id="item-description" name="item-description" placeholder="Describe your item, condition, quantity, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pickup-address">Pickup Address</label>
+                        <textarea id="pickup-address" name="pickup-address" placeholder="Enter your address for pickup (optional)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="expiry-date">Expiry Date (if applicable)</label>
+                        <input type="date" id="expiry-date" name="expiry-date">
+                    </div>
+                    
+                    <button type="submit" class="donate-btn">
+                        <i class="fa fa-heart"></i> Submit Donation
+                    </button>
+                </form>
+            </div>
+            
+            <div class="donate-info">
+                <h2>Why Donate?</h2>
+                
+                <div class="info-item">
+                    <i class="fa fa-leaf"></i>
+                    <div>
+                        <h3>Reduce Waste</h3>
+                        <p>Help prevent perfectly good items from ending up in landfills and contribute to environmental conservation.</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fa fa-hands-helping"></i>
+                    <div>
+                        <h3>Support Community</h3>
+                        <p>Your donations help families in need and support local community organizations and charities.</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fa fa-recycle"></i>
+                    <div>
+                        <h3>Promote Sustainability</h3>
+                        <p>Encourage a circular economy where items are reused and repurposed instead of discarded.</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fa fa-taxi"></i>
+                    <div>
+                        <h3>Free Pickup</h3>
+                        <p>We offer free pickup services for larger donations. Just provide your address and we'll arrange collection.</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fa fa-certificate"></i>
+                    <div>
+                        <h3>Tax Benefits</h3>
+                        <p>Get donation receipts for tax purposes and potentially reduce your taxable income.</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fa fa-clock"></i>
+                    <div>
+                        <h3>Quick Process</h3>
+                        <p>Our streamlined donation process makes it easy to give back to your community in just a few minutes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Navigation Bar Functionality
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+        const loginBtn = document.getElementById('login-btn');
+        const signupBtn = document.getElementById('signup-btn');
+        
+        // Mobile menu toggle with enhanced functionality
+        function toggleMobileMenu() {
+            const isActive = navMenu.classList.contains('active');
+            
+            if (isActive) {
+                // Close menu
+                navMenu.classList.remove('active');
+                mobileNavOverlay.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                // Open menu
+                navMenu.classList.add('active');
+                mobileNavOverlay.classList.add('active');
+                mobileMenuBtn.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
+        
+        // Close mobile menu when clicking overlay
+        mobileNavOverlay.addEventListener('click', function() {
+            toggleMobileMenu();
+        });
+        
+        // Close mobile menu when clicking on a nav link
+        navMenu.addEventListener('click', function(e) {
+            if (e.target.closest('.nav-link')) {
+                // Small delay to allow the click to register
+                setTimeout(() => {
+                    toggleMobileMenu();
+                }, 100);
+            }
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.navbar') && navMenu.classList.contains('active')) {
+                toggleMobileMenu();
+            }
+        });
+        
+        // Close mobile menu on window resize if screen becomes larger
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                toggleMobileMenu();
+            }
+        });
+        
+        // Close mobile menu on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                toggleMobileMenu();
+            }
+        });
+        
+        // Authentication functionality
+        loginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'login.html';
+        });
+        
+        signupBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'signup.html';
+        });
+        
+        // Update cart badge on page load
+        
+        // Category selection
+        function selectCategory(category) {
+            document.getElementById('item-category').value = category;
+            document.getElementById('item-category').focus();
+        }
+        
+        // Donation form submission
+        document.getElementById('donate-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const donation = {
+                donorName: formData.get('donor-name'),
+                donorEmail: formData.get('donor-email'),
+                donorPhone: formData.get('donor-phone'),
+                category: formData.get('item-category'),
+                itemName: formData.get('item-name'),
+                description: formData.get('item-description'),
+                pickupAddress: formData.get('pickup-address'),
+                expiryDate: formData.get('expiry-date'),
+                dateSubmitted: new Date().toISOString(),
+                status: 'pending'
+            };
+            
+            // Save donation to localStorage
+            let donations = JSON.parse(localStorage.getItem('donations')) || [];
+            donations.push(donation);
+            localStorage.setItem('donations', JSON.stringify(donations));
+            
+            // Show success message
+            alert('Thank you for your donation! We will contact you soon to arrange pickup or provide further instructions.');
+            
+            // Reset form
+            this.reset();
+        });
+    </script>
+</body>
+</html> 

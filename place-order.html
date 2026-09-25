@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order - ZeroWasteMart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #faf5e4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 3rem auto;
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+            padding: 2.5rem 2rem 2rem 2rem;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.7rem 0.5rem;
+            border-bottom: 1px solid #eee;
+            font-size: 1.08rem;
+        }
+        th {
+            background: #faf5e4;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+        .product-img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 1rem;
+            background: #faf5e4;
+        }
+        .buy-btn {
+            display: block;
+            width: 100%;
+            background: #2e7d32;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 2rem;
+            padding: 1rem 0;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: background 0.2s;
+        }
+        .buy-btn:hover {
+            background: #256025;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Place Order</h2>
+        <table id="product-table">
+            <!-- Product details will be inserted here -->
+        </table>
+        <button class="buy-btn" onclick="alert('Order placed! Thank you for shopping with ZeroWasteMart.')">Buy Now</button>
+    </div>
+    <script>
+        // For demo, show the first product from localStorage (or a default)
+        let products = window.products || JSON.parse(localStorage.getItem('products')) || [];
+        let donations = JSON.parse(localStorage.getItem('donations')) || [];
+        let allProducts = products.slice();
+        let donatedNames = new Set();
+        donations.forEach(donation => {
+            if (!donatedNames.has(donation.productName)) {
+                allProducts.push({
+                    name: donation.productName,
+                    price: donation.productPrice,
+                    image: donation.productPic,
+                    description: 'Sold by: ' + donation.username,
+                    available: true,
+                    rating: '',
+                    category: donation.category || 'Other',
+                    expiryDate: donation.expiryDate || '',
+                });
+                donatedNames.add(donation.productName);
+            }
+        });
+        // For demo, just show the first product
+        let product = allProducts[0] || {
+            name: 'Sample Product',
+            price: '0.00',
+            image: '',
+            description: '',
+            available: true,
+            rating: '',
+            category: '',
+            expiryDate: '',
+        };
+        // Render product credentials in table
+        let table = document.getElementById('product-table');
+        let html = '';
+        if (product.image) {
+            html += `<tr><th>Image</th><td><img src="${product.image}" class="product-img" alt="${product.name}"></td></tr>`;
+        }
+        html += `<tr><th>Name</th><td>${product.name}</td></tr>`;
+        html += `<tr><th>Price</th><td>₹${product.price}</td></tr>`;
+        if (product.category) html += `<tr><th>Category</th><td>${product.category}</td></tr>`;
+        if (product.description) html += `<tr><th>Description</th><td>${product.description}</td></tr>`;
+        if (product.expiryDate) html += `<tr><th>Expiry Date</th><td>${product.expiryDate}</td></tr>`;
+        if (product.rating) html += `<tr><th>Rating</th><td>${product.rating}</td></tr>`;
+        table.innerHTML = html;
+    </script>
+</body>
+</html> 
